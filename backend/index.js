@@ -5,8 +5,8 @@ const { createClient } = require('@supabase/supabase-js');
 const app = express();
 const port = 3000;
 
-const SUPABASE_URL = 'https://jwvnzjcvsyzxgifqhqkw.supabase.co'; 
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3dm56amN2c3l6eGdpZnFocWt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxMDMxNDUsImV4cCI6MjA3NzY3OTE0NX0.KBwesjWxeiKP_6euXBi3h7tnzTqnhpqJkWDrcqHGO5Q'; // Cek Supabase Settings -> API (service_role)
+const SUPABASE_URL = 'https://jwvnzjcvsyzxgifqhqkw.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3dm56amN2c3l6eGdpZnFocWt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxMDMxNDUsImV4cCI6MjA3NzY3OTE0NX0.KBwesjWxeiKP_6euXBi3h7tnzTqnhpqJkWDrcqHGO5Q';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -138,3 +138,5 @@ app.post('/api/messages', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server Supabase jalan di port ${port}`);
 });
+
+module.exports = app;

@@ -1,81 +1,76 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 
-// Import Halaman
+// Import Screens
 import HomeScreen from './screens/HomeScreen';
 import ProductListScreen from './screens/ProductListScreen';
 import ProductDetailScreen from './screens/ProductDetailScreen';
-import AboutScreen from './screens/AboutScreen';
 import ContactScreen from './screens/ContactScreen';
 import AdminScreen from './screens/AdminScreen';
+import SplashScreen from './screens/SplashScreen'; // <--- Import Splash Screen
 
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
-// 1. Buat Kelompok Tab Menu Bawah
-function MainTabs() {
+// Stack untuk Produk (Supaya bisa klik Detail)
+function ProductStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="ProductList" component={ProductListScreen} />
+      <Stack.Screen name="DetailProduk" component={ProductDetailScreen} />
+    </Stack.Navigator>
+  );
+}
+
+// Navigasi Utama (Tab Bar)
+function MainNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        headerShown: false,
-        tabBarActiveTintColor: '#E65100',
-        tabBarInactiveTintColor: 'gray',
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-
           if (route.name === 'Beranda') iconName = focused ? 'home' : 'home-outline';
-          else if (route.name === 'Produk') iconName = focused ? 'shirt' : 'shirt-outline';
-          else if (route.name === 'Tentang') iconName = focused ? 'information-circle' : 'information-circle-outline';
+          else if (route.name === 'Produk') iconName = focused ? 'grid' : 'grid-outline';
           else if (route.name === 'Kontak') iconName = focused ? 'call' : 'call-outline';
-          else if (route.name === 'Admin') iconName = focused ? 'settings' : 'settings-outline';
-
+          else if (route.name === 'Admin') iconName = focused ? 'person' : 'person-outline';
           return <Ionicons name={iconName} size={size} color={color} />;
         },
+        tabBarActiveTintColor: '#5D4037',
+        tabBarInactiveTintColor: 'gray',
+        headerShown: false,
       })}
     >
       <Tab.Screen name="Beranda" component={HomeScreen} />
-      
-      {/* --- UPDATE DI SINI (LISTENER TAB) --- */}
-      <Tab.Screen 
-        name="Produk" 
-        component={ProductListScreen}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            // Mencegah aksi default (yaitu hanya pindah tab)
-            e.preventDefault();
-            // Paksa pindah dengan membawa parameter filter: 'Semua'
-            navigation.navigate('Produk', { filter: 'Semua' });
-          },
-        })}
-      />
-      {/* ------------------------------------- */}
-
-      <Tab.Screen name="Tentang" component={AboutScreen} />
+      <Tab.Screen name="Produk" component={ProductStack} />
       <Tab.Screen name="Kontak" component={ContactScreen} />
       <Tab.Screen name="Admin" component={AdminScreen} />
     </Tab.Navigator>
   );
 }
 
-// 2. Buat Navigasi Utama (Stack)
 export default function App() {
+  const [isShowSplash, setIsShowSplash] = useState(true);
+
+  useEffect(() => {
+    // Tahan Splash Screen selama 3 detik (3000 ms)
+    const timer = setTimeout(() => {
+      setIsShowSplash(false);
+    }, 3000);
+
+    return () => clearTimeout(timer); // Bersihkan timer jika aplikasi ditutup
+  }, []);
+
+  // Logika: Kalau isShowSplash TRUE, tampilkan Splash. Kalau FALSE, masuk Navigasi.
+  if (isShowSplash) {
+    return <SplashScreen />;
+  }
+
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen 
-          name="Main" 
-          component={MainTabs} 
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen 
-          name="DetailProduk" 
-          component={ProductDetailScreen} 
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
+      <MainNavigator />
     </NavigationContainer>
   );
 }
