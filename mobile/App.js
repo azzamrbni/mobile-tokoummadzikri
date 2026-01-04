@@ -4,18 +4,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 
-// Import Screens
 import HomeScreen from './screens/HomeScreen';
 import ProductListScreen from './screens/ProductListScreen';
 import ProductDetailScreen from './screens/ProductDetailScreen';
 import ContactScreen from './screens/ContactScreen';
 import AdminScreen from './screens/AdminScreen';
-import SplashScreen from './screens/SplashScreen'; // <--- Import Splash Screen
+import SplashScreen from './screens/SplashScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// Stack untuk Produk (Supaya bisa klik Detail)
 function ProductStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -25,7 +23,6 @@ function ProductStack() {
   );
 }
 
-// Navigasi Utama (Tab Bar)
 function MainNavigator() {
   return (
     <Tab.Navigator
@@ -55,15 +52,13 @@ export default function App() {
   const [isShowSplash, setIsShowSplash] = useState(true);
 
   useEffect(() => {
-    // Tahan Splash Screen selama 3 detik (3000 ms)
     const timer = setTimeout(() => {
       setIsShowSplash(false);
     }, 3000);
 
-    return () => clearTimeout(timer); // Bersihkan timer jika aplikasi ditutup
+    return () => clearTimeout(timer);
   }, []);
 
-  // Logika: Kalau isShowSplash TRUE, tampilkan Splash. Kalau FALSE, masuk Navigasi.
   if (isShowSplash) {
     return <SplashScreen />;
   }

@@ -13,10 +13,8 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
-// --- 1. GET: Ambil Semua Produk ---
 app.get('/api/products', async (req, res) => {
   try {
-    // Ambil data dari tabel 'produk'
     const { data, error } = await supabase
       .from('produk') 
       .select('*')
@@ -24,12 +22,9 @@ app.get('/api/products', async (req, res) => {
 
     if (error) throw error;
 
-    // TRICK PENTING:
-    // Database punya kolom 'title', tapi Frontend butuhnya 'name'.
-    // Kita copy nilai 'title' ke 'name' sebelum dikirim ke HP.
     const formattedData = data.map(item => ({
       ...item,
-      name: item.title // Mapping Title -> Name
+      name: item.title
     }));
 
     res.json(formattedData);
@@ -39,20 +34,18 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
-// --- 2. POST: Tambah Produk Baru ---
 app.post('/api/products', async (req, res) => {
-  // Frontend mengirim 'name', tapi kita simpan ke kolom 'title'
   const { name, price, category, image, description, images } = req.body;
   
   try {
     const { data, error } = await supabase
       .from('produk')
       .insert([{ 
-        title: name, // Mapping Name -> Title
+        title: name,
         price: price, 
         category: category, 
         image: image, 
-        images: images, // Simpan array gambar jika ada
+        images: images,
         description: description 
       }])
       .select();
@@ -65,7 +58,6 @@ app.post('/api/products', async (req, res) => {
   }
 });
 
-// --- 3. PUT: Edit Produk ---
 app.put('/api/products/:id', async (req, res) => {
   const { id } = req.params;
   const { name, price, category, image, description, images } = req.body;
@@ -74,7 +66,7 @@ app.put('/api/products/:id', async (req, res) => {
     const { data, error } = await supabase
       .from('produk')
       .update({ 
-        title: name, // Mapping Name -> Title
+        title: name,
         price, 
         category, 
         image, 
@@ -92,7 +84,6 @@ app.put('/api/products/:id', async (req, res) => {
   }
 });
 
-// --- 4. DELETE: Hapus Produk ---
 app.delete('/api/products/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -110,12 +101,10 @@ app.delete('/api/products/:id', async (req, res) => {
   }
 });
 
-// --- 5. KONTAK (Kirim Pesan) ---
 app.post('/api/messages', async (req, res) => {
   const { name, contact, message } = req.body;
   
   try {
-    // Kita hapus .select() agar backend tidak perlu membaca ulang data (mencegah error izin/RLS)
     const { error } = await supabase
       .from('kontak')
       .insert([{ 
@@ -126,7 +115,6 @@ app.post('/api/messages', async (req, res) => {
 
     if (error) throw error;
 
-    // Langsung jawab Sukses tanpa kirim data balik yang ribet
     res.status(201).json({ message: 'Pesan terkirim!' });
     
   } catch (err) {

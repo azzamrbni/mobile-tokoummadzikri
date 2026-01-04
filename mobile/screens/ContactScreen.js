@@ -15,16 +15,13 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function ContactScreen() {
   
-  // --- KONFIGURASI API (GANTI DENGAN IP LAPTOP KAMU) ---
-  const API_URL = 'http://172.20.10.5:3000/api/messages'; 
-  // -----------------------------------------------------
+  const API_URL = 'https://mobile-tokoummadzikri.vercel.app/api/messages';
 
   const [name, setName] = useState('');
   const [contact, setContact] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Fungsi Kirim Pesan ke Backend
   const handleSendMessage = async () => {
     if (!name || !contact || !message) {
       Alert.alert('Mohon Lengkapi', 'Nama, Kontak, dan Pesan harus diisi ya Bunda.');
@@ -72,7 +69,6 @@ export default function ContactScreen() {
       
       <ScrollView showsVerticalScrollIndicator={false}>
         
-        {/* --- HEADER HERO --- */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Hubungi Kami</Text>
           <Text style={styles.headerSubtitle}>
@@ -82,10 +78,8 @@ export default function ContactScreen() {
 
         <View style={styles.contentContainer}>
           
-          {/* 1. INFORMASI KONTAK */}
           <Text style={styles.sectionTitle}>Informasi Kontak</Text>
           <View style={styles.card}>
-            {/* Alamat */}
             <View style={styles.contactItem}>
               <View style={styles.iconBg}><Ionicons name="location" size={20} color="#5D4037" /></View>
               <View>
@@ -93,7 +87,6 @@ export default function ContactScreen() {
                 <Text style={styles.contactValue}>Jl. Raya Margonda No. 123, Depok</Text>
               </View>
             </View>
-            
             {/* WhatsApp */}
             <TouchableOpacity 
               style={styles.contactItem}
@@ -109,7 +102,6 @@ export default function ContactScreen() {
               </View>
             </TouchableOpacity>
 
-            {/* Email */}
             <View style={styles.contactItem}>
               <View style={styles.iconBg}><Ionicons name="mail" size={20} color="#5D4037" /></View>
               <View>
@@ -118,7 +110,6 @@ export default function ContactScreen() {
               </View>
             </View>
 
-            {/* Jam Operasional */}
             <View style={styles.divider} />
             <Text style={styles.contactLabel}>Jam Operasional</Text>
             <View style={styles.rowBetween}>
@@ -131,7 +122,6 @@ export default function ContactScreen() {
             </View>
           </View>
 
-          {/* 2. PLATFORM BELANJA */}
           <Text style={styles.sectionTitle}>Belanja di Platform Kami</Text>
           <View style={styles.platformGrid}>
             <TouchableOpacity 
@@ -158,7 +148,6 @@ export default function ContactScreen() {
             <Text style={styles.platformText}>Instagram</Text>
           </TouchableOpacity>
 
-          {/* 3. FORM KIRIM PESAN */}
           <Text style={styles.sectionTitle}>Kirim Pesan</Text>
           <View style={styles.card}>
             <Text style={styles.formLabel}>Nama Lengkap</Text>

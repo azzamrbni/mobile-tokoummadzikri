@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View, Text, ActivityIndicator, StatusBar } from 'react-native';
-// Note: Image tidak perlu di-import lagi
 
 export default function SplashScreen() {
   return (
@@ -8,7 +7,6 @@ export default function SplashScreen() {
       <StatusBar barStyle="dark-content" backgroundColor="#FBEce4" />
       
       <View style={styles.textContainer}>
-        {/* Bagian Image sudah dihapus */}
         <Text style={styles.title}>Toko Umma Dzikri</Text>
         <Text style={styles.subtitle}>Perlengkapan Bayi & Merchandise Islami</Text>
       </View>
@@ -30,26 +28,24 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     alignItems: 'center',
-    // marginBottom dikurangi sedikit karena tidak ada logo
     marginBottom: 30, 
   },
-  // Style 'logo' dihapus
   title: {
-    fontSize: 30, // Ukuran font diperbesar agar lebih menonjol
+    fontSize: 30,
     fontWeight: 'bold',
     color: '#5D4037',
-    marginBottom: 10, // Jarak ke subtitle
+    marginBottom: 10,
     textAlign: 'center',
   },
   subtitle: {
-    fontSize: 16, // Ukuran font diperbesar sedikit
+    fontSize: 16,
     color: '#795548',
     textAlign: 'center',
-    paddingHorizontal: 20, // Agar tidak terlalu mepet pinggir di layar kecil
+    paddingHorizontal: 20,
   },
   footer: {
     position: 'absolute',
-    bottom: 50, // Posisi loading di bawah
+    bottom: 50,
     alignItems: 'center',
   },
   loadingText: {

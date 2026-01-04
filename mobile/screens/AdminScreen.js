@@ -14,39 +14,30 @@ import {
   Platform
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker'; // Pastikan sudah install: npx expo install expo-image-picker
+import * as ImagePicker from 'expo-image-picker';
 
 export default function AdminScreen() {
   
-  // --- KONFIGURASI API (GANTI DENGAN IP LAPTOP KAMU) ---
-  // Cara cek IP di Windows: Buka CMD -> ketik ipconfig -> cari IPv4 Address
-  const API_URL = 'http://172.20.10.5:3000/api/products'; 
-  // -----------------------------------------------------
+  const API_URL = 'https://mobile-tokoummadzikri.vercel.app/api/products';
 
-  // --- STATE LOGIN ---
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  // --- STATE DATA ---
-  const [products, setProducts] = useState([]); // Data kosong, nanti diisi dari backend
+  const [products, setProducts] = useState([]);
 
-  // --- STATE MODAL & FORM ---
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
-  // Form Inputs
   const [formName, setFormName] = useState('');
   const [formPrice, setFormPrice] = useState('');
   const [formCategory, setFormCategory] = useState('');
   const [formImage, setFormImage] = useState(null);
 
-  // Dropdown
   const [showDropdown, setShowDropdown] = useState(false);
   const categoryOptions = ['Souvenir', 'Pakaian', 'Makanan & Minuman', 'Mainan'];
 
-  // --- 1. READ (AMBIL DATA DARI BACKEND) ---
   useEffect(() => {
     if (isLoggedIn) {
       fetchProducts();
@@ -58,12 +49,9 @@ export default function AdminScreen() {
       const response = await fetch(API_URL);
       const data = await response.json();
 
-      // CEK: Apakah data yang diterima benar-benar Array (Daftar Produk)?
       if (Array.isArray(data)) {
         setProducts(data);
       } else {
-        // Jika bukan array, berarti Error dari Backend.
-        // Tampilkan error aslinya di Console Laptop & Alert HP
         console.log("ERROR DARI BACKEND:", data); 
         Alert.alert("Gagal Memuat Data", `Backend Error: ${JSON.stringify(data)}`);
       }
@@ -73,7 +61,6 @@ export default function AdminScreen() {
     }
   };
 
-  // --- FUNGSI LOGIN ---
   const handleLogin = () => {
     if (username === 'admin' && password === '123') {
       setIsLoggedIn(true);
@@ -88,7 +75,6 @@ export default function AdminScreen() {
     setPassword('');
   };
 
-  // --- FUNGSI GAMBAR ---
   const pickImage = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissionResult.granted === false) {
@@ -130,7 +116,6 @@ export default function AdminScreen() {
     setModalVisible(true);
   };
 
-  // --- 2. CREATE & UPDATE (SIMPAN KE BACKEND) ---
   const handleSave = async () => {
     if (!formName || !formPrice || !formCategory) {
       Alert.alert('Error', 'Nama, Kategori, dan Harga wajib diisi!');
@@ -165,7 +150,7 @@ export default function AdminScreen() {
         Alert.alert('Sukses', 'Produk baru ditambahkan!');
       }
       
-      fetchProducts(); // Refresh data
+      fetchProducts();
       setModalVisible(false);
       setShowDropdown(false);
     } catch (error) {
@@ -174,7 +159,6 @@ export default function AdminScreen() {
     }
   };
 
-  // --- 3. DELETE (HAPUS DARI BACKEND) ---
   const handleDelete = (id, name) => {
     Alert.alert('Konfirmasi Hapus', `Yakin ingin menghapus ${name}?`, [
       { text: 'Batal', style: 'cancel' },
@@ -184,7 +168,7 @@ export default function AdminScreen() {
         onPress: async () => {
           try {
             await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-            fetchProducts(); // Refresh data setelah hapus
+            fetchProducts();
           } catch (error) {
             console.error(error);
             Alert.alert('Error', 'Gagal menghapus data.');
@@ -194,7 +178,6 @@ export default function AdminScreen() {
     ]);
   };
 
-  // --- TAMPILAN LOGIN ---
   if (!isLoggedIn) {
     return (
       <View style={styles.loginContainer}>
@@ -217,12 +200,10 @@ export default function AdminScreen() {
     );
   }
 
-  // --- TAMPILAN DASHBOARD ---
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFF" />
       
-      {/* Header */}
       <View style={styles.header}>
         <View>
           <Text style={styles.headerTitle}>Admin Dashboard</Text>
@@ -241,7 +222,6 @@ export default function AdminScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* List Produk */}
       <ScrollView contentContainerStyle={styles.listContainer} showsVerticalScrollIndicator={false}>
         {(products || []).map((item) => (
           <View key={item.id} style={styles.productCard}>
@@ -264,7 +244,6 @@ export default function AdminScreen() {
         <View style={{height: 100}} /> 
       </ScrollView>
 
-      {/* --- MODAL FORM --- */}
       <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.modalOverlay}>
           <View style={styles.modalContent}>
@@ -277,7 +256,6 @@ export default function AdminScreen() {
 
             <ScrollView showsVerticalScrollIndicator={false}>
               
-              {/* Upload Gambar */}
               <Text style={styles.label}>Gambar Produk</Text>
               <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
                 {formImage ? (
@@ -290,11 +268,9 @@ export default function AdminScreen() {
                 )}
               </TouchableOpacity>
 
-              {/* Nama Produk */}
               <Text style={styles.label}>Nama Produk</Text>
               <TextInput style={styles.input} value={formName} onChangeText={setFormName} placeholder="Contoh: Cardigan Anak" />
 
-              {/* Dropdown Kategori */}
               <Text style={styles.label}>Kategori</Text>
               <TouchableOpacity style={styles.dropdownTrigger} onPress={() => setShowDropdown(!showDropdown)}>
                 <Text style={{color: formCategory ? '#333' : '#999'}}>
@@ -314,7 +290,6 @@ export default function AdminScreen() {
                 </View>
               )}
 
-              {/* Harga */}
               <Text style={styles.label}>Harga (Angka saja)</Text>
               <TextInput style={styles.input} value={formPrice} onChangeText={setFormPrice} placeholder="Contoh: 50000" keyboardType="numeric" />
 

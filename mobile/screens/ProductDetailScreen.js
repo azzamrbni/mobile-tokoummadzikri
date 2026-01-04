@@ -10,18 +10,15 @@ const { width } = Dimensions.get('window');
 export default function ProductDetailScreen({ route, navigation }) {
   const { product } = route.params;
 
-  // LOGIKA PENTING:
-  // Kita harus handle apakah data pakai format lama ('image') atau baru ('images')
   let displayImages = [];
   if (product.images && product.images.length > 0) {
-    displayImages = product.images; // Array baru
+    displayImages = product.images;
   } else if (product.image) {
-    displayImages = [product.image]; // Format lama dijadikan array
+    displayImages = [product.image];
   } else {
-    displayImages = ['https://via.placeholder.com/300']; // Placeholder
+    displayImages = ['https://via.placeholder.com/300'];
   }
 
-  // State untuk indikator slide (titik-titik)
   const [activeSlide, setActiveSlide] = useState(0);
 
   const onScroll = (event) => {
@@ -46,7 +43,6 @@ export default function ProductDetailScreen({ route, navigation }) {
 
       <ScrollView contentContainerStyle={{paddingBottom: 120}}>
         
-        {/* --- IMAGE SLIDER --- */}
         <View>
           <ScrollView 
             horizontal 
@@ -65,7 +61,6 @@ export default function ProductDetailScreen({ route, navigation }) {
             ))}
           </ScrollView>
           
-          {/* Indikator Titik (Pagination Dots) */}
           {displayImages.length > 1 && (
             <View style={styles.pagination}>
               {displayImages.map((_, index) => (
@@ -80,7 +75,6 @@ export default function ProductDetailScreen({ route, navigation }) {
             </View>
           )}
         </View>
-        {/* -------------------- */}
 
         <View style={styles.infoContainer}>
           <View style={styles.tagContainer}><Text style={styles.tagText}>{product.category}</Text></View>

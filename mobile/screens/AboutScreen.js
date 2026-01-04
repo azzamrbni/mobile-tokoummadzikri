@@ -7,13 +7,11 @@ export default function AboutScreen() {
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <StatusBar barStyle="dark-content" backgroundColor="#FBEce4" />
       
-      {/* Hero Section */}
       <View style={styles.hero}>
         <Text style={styles.heroTitle}>Tentang Kami</Text>
         <Text style={styles.heroSubtitle}>Cerita perjalanan Toko Umma Dzikri melayani keluarga Indonesia</Text>
       </View>
 
-      {/* Cerita Kami */}
       <View style={styles.section}>
         <Text style={styles.sectionHeader}>Cerita Kami</Text>
         <Text style={styles.paragraph}>
@@ -27,7 +25,6 @@ export default function AboutScreen() {
         </Text>
       </View>
 
-      {/* Visi & Misi (Cards) */}
       <View style={styles.cardsContainer}>
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Visi Kami</Text>
@@ -53,7 +50,6 @@ export default function AboutScreen() {
         </View>
       </View>
 
-      {/* Kenapa Memilih Kami */}
       <View style={[styles.section, { backgroundColor: '#F9FAFB' }]}>
         <Text style={styles.sectionHeader}>Kenapa Memilih Kami?</Text>
         <View style={styles.gridFeatures}>
@@ -80,7 +76,6 @@ export default function AboutScreen() {
         </View>
       </View>
 
-      {/* Footer Values */}
       <View style={styles.footerValues}>
         <Text style={styles.footerTitle}>Nilai-Nilai Kami</Text>
         <View style={styles.valueRow}>

@@ -14,14 +14,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native'; // Agar refresh saat kembali ke Home
 
 export default function HomeScreen({ navigation }) {
-  // --- GANTI IP DI SINI ---
-  const API_URL = 'http://172.20.10.5:3000/api/products';
-  // ------------------------
+  const API_URL = 'https://mobile-tokoummadzikri.vercel.app/api/products';
 
   const [bestSellers, setBestSellers] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  // Fungsi Fetch
   const fetchBestSellers = async () => {
     try {
       const response = await fetch(API_URL);
@@ -31,9 +28,7 @@ export default function HomeScreen({ navigation }) {
       if (Array.isArray(data)) {
         setBestSellers(data.slice(0, 3)); 
       } else {
-        // Kalau bukan array, berarti Error. Tampilkan di console laptop.
-        console.log("ERROR DARI BACKEND:", data); 
-        // Jangan set data kalau error
+        console.log("ERROR DARI BACKEND:", data);
       }
     } catch (error) {
       console.error("Gagal fetch:", error);
@@ -42,7 +37,6 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  // Otomatis refresh saat halaman dibuka
   useFocusEffect(
     useCallback(() => {
       fetchBestSellers();
@@ -54,7 +48,6 @@ export default function HomeScreen({ navigation }) {
     fetchBestSellers();
   };
 
-  // Data Statis Lainnya
   const features = [
     { id: 1, title: 'Lokal & Strategis', icon: 'location-outline' },
     { id: 2, title: 'Variasi Lengkap', icon: 'grid-outline' },
@@ -109,7 +102,6 @@ export default function HomeScreen({ navigation }) {
           </View>
         </View>
 
-        {/* --- KEUNGGULAN --- */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitleCenter}>Keunggulan Kami</Text>
           <View style={styles.featuresGrid}>
@@ -124,7 +116,6 @@ export default function HomeScreen({ navigation }) {
           </View>
         </View>
 
-        {/* --- KATEGORI --- */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Kategori Produk</Text>
           <View style={styles.categoryRow}>
@@ -143,7 +134,6 @@ export default function HomeScreen({ navigation }) {
           </View>
         </View>
 
-        {/* --- BEST SELLER (DARI API) --- */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Produk Terbaru</Text>
           {bestSellers.length === 0 ? (
@@ -171,7 +161,6 @@ export default function HomeScreen({ navigation }) {
           )}
         </View>
 
-        {/* --- TESTIMONI --- */}
         <View style={[styles.sectionContainer, { paddingBottom: 40 }]}>
           <Text style={styles.sectionTitle}>Testimoni Pelanggan</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>

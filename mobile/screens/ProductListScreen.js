@@ -13,24 +13,20 @@ import {
 } from 'react-native';
 
 export default function ProductListScreen({ navigation, route }) {
-  // --- GANTI IP DI SINI ---
-  const API_URL = 'http://172.20.10.5:3000/api/products'; 
-  // ------------------------
+  const API_URL = 'https://mobile-tokoummadzikri.vercel.app/api/products';
 
-  const [products, setProducts] = useState([]); // Data dari server
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('Semua');
 
   const categories = ['Semua', 'Souvenir', 'Pakaian', 'Makanan & Minuman'];
 
-  // 1. Ambil Data dari Backend
   const fetchProducts = async () => {
     try {
       const response = await fetch(API_URL);
       const data = await response.json();
 
-      // Cek: Apakah data benar-benar Array?
       if (Array.isArray(data)) {
         setProducts(data);
       } else {
@@ -49,13 +45,11 @@ export default function ProductListScreen({ navigation, route }) {
     fetchProducts();
   }, []);
 
-  // 2. Logic Refresh (Tarik ke bawah)
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchProducts();
   }, []);
 
-  // 3. Logic Filter dari Home
   useEffect(() => {
     if (route.params?.filter) {
       setSelectedCategory(route.params.filter);
@@ -63,7 +57,6 @@ export default function ProductListScreen({ navigation, route }) {
     }
   }, [route.params]);
 
-  // 4. Logic Filter Kategori
   const filteredProducts = selectedCategory === 'Semua' 
     ? products 
     : products.filter(item => item.category === selectedCategory);
@@ -127,7 +120,6 @@ export default function ProductListScreen({ navigation, route }) {
               style={styles.card}
               onPress={() => navigation.navigate('DetailProduk', { product: item })}
             >
-              {/* Fallback Image jika gambar error/kosong */}
               <Image 
                 source={{ uri: item.image || 'https://via.placeholder.com/150' }} 
                 style={styles.image} 
