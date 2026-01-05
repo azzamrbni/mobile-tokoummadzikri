@@ -13,6 +13,10 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
+app.get('/', (req, res) => {
+    res.send('Server Toko Umma Dzikri Berjalan Lancar! 🚀');
+});
+
 app.get('/api/products', async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -123,7 +127,7 @@ app.post('/api/messages', async (req, res) => {
       .from('kontak')
       .insert([{ 
         name: name, 
-        contact_info: contact, 
+        contact: contact,
         message: message 
       }]);
 
