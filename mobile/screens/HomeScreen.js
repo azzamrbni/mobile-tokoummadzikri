@@ -11,7 +11,11 @@ import {
   RefreshControl 
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native'; // Agar refresh saat kembali ke Home
+import { useFocusEffect } from '@react-navigation/native';
+
+// IMPORT GAMBAR LOGO
+// Pastikan path './tokoummadzikrilogo-removebg-preview.png' sesuai dengan lokasi file Anda
+const logoImage = require('../assets/tokoummadzikrilogo-removebg-preview.png');
 
 export default function HomeScreen({ navigation }) {
   const API_URL = 'https://mobile-tokoummadzikri.vercel.app/api/products';
@@ -19,12 +23,16 @@ export default function HomeScreen({ navigation }) {
   const [bestSellers, setBestSellers] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
+  // Helper format uang
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
   const fetchBestSellers = async () => {
     try {
       const response = await fetch(API_URL);
       const data = await response.json();
 
-      // Cek: Apakah data benar-benar Array?
       if (Array.isArray(data)) {
         setBestSellers(data.slice(0, 3)); 
       } else {
@@ -69,7 +77,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FBEce4" />
+      <StatusBar barStyle="dark-content" backgroundColor="#f6e3d7" />
       
       <ScrollView 
         showsVerticalScrollIndicator={false}
@@ -78,6 +86,10 @@ export default function HomeScreen({ navigation }) {
         
         {/* --- HERO SECTION --- */}
         <View style={styles.heroContainer}>
+          
+          {/* UPDATED: LOGO DITAMBAHKAN DI SINI */}
+          <Image source={logoImage} style={styles.logoHero} />
+
           <Text style={styles.heroTitle}>
             Toko Perlengkapan Bayi dan Merchandise Islami Terlengkap di Depok
           </Text>
@@ -95,7 +107,7 @@ export default function HomeScreen({ navigation }) {
             
             <TouchableOpacity 
               style={[styles.btn, styles.btnOutline]}
-              onPress={() => Linking.openURL('https://shopee.co.id')}
+              onPress={() => Linking.openURL('https://id.shp.ee/yU8Gj2W')}
             >
               <Text style={styles.btnTextOutline}>Beli di Shopee</Text>
             </TouchableOpacity>
@@ -103,12 +115,12 @@ export default function HomeScreen({ navigation }) {
         </View>
 
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitleCenter}>Keunggulan Kami</Text>
+          <Text style={styles.sectionTitle}>Keunggulan Kami</Text>
           <View style={styles.featuresGrid}>
             {features.map((item) => (
               <View key={item.id} style={styles.featureItem}>
                 <View style={styles.featureIconBg}>
-                  <Ionicons name={item.icon} size={24} color="#5D4037" />
+                  <Ionicons name={item.icon} size={24} color="#5a3623" />
                 </View>
                 <Text style={styles.featureText}>{item.title}</Text>
               </View>
@@ -137,7 +149,7 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Produk Terbaru</Text>
           {bestSellers.length === 0 ? (
-             <Text style={{color: '#999', fontStyle: 'italic'}}>Belum ada produk.</Text>
+             <Text style={{color: '#999', fontStyle: 'italic', textAlign: 'center'}}>Belum ada produk.</Text>
           ) : (
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{paddingBottom: 10}}>
               {bestSellers.map((item) => (
@@ -153,7 +165,7 @@ export default function HomeScreen({ navigation }) {
                   <View style={styles.productInfo}>
                     <Text style={styles.productCategory}>{item.category}</Text>
                     <Text style={styles.productName} numberOfLines={2}>{item.name}</Text>
-                    <Text style={styles.productPrice}>Rp {item.price}</Text>
+                    <Text style={styles.productPrice}>Rp {formatPrice(item.price)}</Text>
                   </View>
                 </TouchableOpacity>
               ))}
@@ -188,21 +200,27 @@ const styles = StyleSheet.create({
   
   heroContainer: {
     backgroundColor: '#FBEce4', 
-    padding: 20, paddingTop: 80, paddingBottom: 40,
-    borderBottomLeftRadius: 30, borderBottomRightRadius: 30, alignItems: 'center',
+    padding: 20, paddingTop: 60, paddingBottom: 40,
+    borderBottomLeftRadius: 30, borderBottomRightRadius: 30, alignItems: 'center',  
   },
-  heroTitle: { fontSize: 22, fontWeight: 'bold', color: '#5D4037', textAlign: 'center', marginBottom: 10 },
+  // UPDATED: Style untuk logo
+  logoHero: {
+    width: 120,
+    height: 100,
+    resizeMode: 'contain',
+    marginBottom: 10,
+  },
+  heroTitle: { fontSize: 22, fontWeight: 'bold', color: '#5a3623', textAlign: 'center', marginBottom: 10 },
   heroSubtitle: { fontSize: 14, color: '#795548', textAlign: 'center', marginBottom: 20, lineHeight: 20 },
   heroButtons: { flexDirection: 'row', gap: 15 },
   btn: { paddingVertical: 10, paddingHorizontal: 20, borderRadius: 8 },
-  btnPrimary: { backgroundColor: '#FFC107' },
-  btnTextPrimary: { fontWeight: 'bold', color: '#5D4037' },
-  btnOutline: { borderWidth: 1, borderColor: '#5D4037' },
-  btnTextOutline: { fontWeight: 'bold', color: '#5D4037' },
+  btnPrimary: { backgroundColor: '#5a3623' },
+  btnTextPrimary: { fontWeight: 'bold', color: '#f6e3d7' },
+  btnOutline: { borderWidth: 1, borderColor: '#5a3623' },
+  btnTextOutline: { fontWeight: 'bold', color: '#5a3623' },
 
   sectionContainer: { marginTop: 25, paddingHorizontal: 20 },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#333', marginBottom: 15 },
-  sectionTitleCenter: { fontSize: 18, fontWeight: 'bold', color: '#333', marginBottom: 20, textAlign: 'center' },
+  sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#5a3623', marginBottom: 20, textAlign: 'center' },
 
   featuresGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
   featureItem: { width: '45%', alignItems: 'center', marginBottom: 20 },
@@ -211,7 +229,7 @@ const styles = StyleSheet.create({
 
   categoryRow: { flexDirection: 'row', justifyContent: 'space-between' },
   categoryCard: { alignItems: 'center', width: '30%' }, 
-  categoryIconBg: { width: 60, height: 60, backgroundColor: '#FFC107', borderRadius: 30, justifyContent: 'center', alignItems: 'center', marginBottom: 8, shadowColor: "#000", shadowOffset: {width:0, height:2}, shadowOpacity:0.1, elevation:3 },
+  categoryIconBg: { width: 60, height: 60, backgroundColor: '#5a3623', borderRadius: 30, justifyContent: 'center', alignItems: 'center', marginBottom: 8, shadowColor: "#000", shadowOffset: {width:0, height:2}, shadowOpacity:0.1, elevation:3 },
   categoryText: { fontSize: 12, fontWeight: 'bold', color: '#555', textAlign: 'center' },
 
   productCard: { width: 140, marginRight: 15, backgroundColor: '#FFF', borderRadius: 12, shadowColor: "#000", shadowOffset: {width:0, height:1}, shadowOpacity:0.1, elevation:2, marginBottom: 10, overflow: 'hidden' },

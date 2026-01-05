@@ -11,11 +11,13 @@ import {
   Alert,
   StatusBar,
   KeyboardAvoidingView,
-  Platform,
-  ActivityIndicator
+  Platform
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+
+// UPDATED: Import Logo
+const logoImage = require('../assets/tokoummadzikrilogo-removebg-preview.png');
 
 export default function AdminScreen() {
   
@@ -26,8 +28,6 @@ export default function AdminScreen() {
   const [password, setPassword] = useState('');
 
   const [products, setProducts] = useState([]);
-  
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -89,16 +89,17 @@ export default function AdminScreen() {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 0.3,
+      quality: 0.5,
       base64: true,
     });
 
     if (!result.canceled) {
       const base64Img = `data:image/jpeg;base64,${result.assets[0].base64}`;
-      setFormImage(base64Img);
+      setFormImage(base64Img); 
     }
   };
 
+  // --- FUNGSI CRUD (TAMBAH/EDIT/HAPUS) ---
   const openAddModal = () => {
     setIsEditMode(false);
     setFormName('');
@@ -123,8 +124,6 @@ export default function AdminScreen() {
       Alert.alert('Error', 'Nama, Kategori, dan Harga wajib diisi!');
       return;
     }
-
-    setIsSubmitting(true);
 
     const imageToSave = formImage || 'https://via.placeholder.com/150';
     
@@ -158,8 +157,6 @@ export default function AdminScreen() {
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Gagal menyimpan data ke server.');
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -187,7 +184,9 @@ export default function AdminScreen() {
       <View style={styles.loginContainer}>
         <StatusBar barStyle="dark-content" />
         <View style={styles.logoContainer}>
-          <Ionicons name="storefront" size={60} color="#5D4037" />
+          {/* UPDATED: Mengganti Ionicons Storefront dengan Logo Image */}
+          <Image source={logoImage} style={styles.logoLogin} />
+          
           <Text style={styles.loginTitle}>Admin Login</Text>
           <Text style={styles.loginSubtitle}>Toko Umma Dzikri</Text>
         </View>
@@ -252,15 +251,15 @@ export default function AdminScreen() {
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>{isEditMode ? 'Edit Produk' : 'Tambah Produk Baru'}</Text>
-              <TouchableOpacity onPress={() => !isSubmitting && setModalVisible(false)} disabled={isSubmitting}>
-                <Ionicons name="close" size={24} color={isSubmitting ? "#CCC" : "#333"} />
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Ionicons name="close" size={24} color="#333" />
               </TouchableOpacity>
             </View>
 
             <ScrollView showsVerticalScrollIndicator={false}>
               
               <Text style={styles.label}>Gambar Produk</Text>
-              <TouchableOpacity style={styles.imagePicker} onPress={pickImage} disabled={isSubmitting}>
+              <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
                 {formImage ? (
                   <Image source={{ uri: formImage }} style={styles.imagePreview} />
                 ) : (
@@ -272,10 +271,10 @@ export default function AdminScreen() {
               </TouchableOpacity>
 
               <Text style={styles.label}>Nama Produk</Text>
-              <TextInput style={styles.input} value={formName} onChangeText={setFormName} placeholder="Contoh: Cardigan Anak" editable={!isSubmitting} />
+              <TextInput style={styles.input} value={formName} onChangeText={setFormName} placeholder="Contoh: Cardigan Anak" />
 
               <Text style={styles.label}>Kategori</Text>
-              <TouchableOpacity style={styles.dropdownTrigger} onPress={() => !isSubmitting && setShowDropdown(!showDropdown)} disabled={isSubmitting}>
+              <TouchableOpacity style={styles.dropdownTrigger} onPress={() => setShowDropdown(!showDropdown)}>
                 <Text style={{color: formCategory ? '#333' : '#999'}}>
                   {formCategory || "Pilih Kategori"}
                 </Text>
@@ -294,25 +293,13 @@ export default function AdminScreen() {
               )}
 
               <Text style={styles.label}>Harga (Angka saja)</Text>
-              <TextInput style={styles.input} value={formPrice} onChangeText={setFormPrice} placeholder="Contoh: 50000" keyboardType="numeric" editable={!isSubmitting} />
+              <TextInput style={styles.input} value={formPrice} onChangeText={setFormPrice} placeholder="Contoh: 50000" keyboardType="numeric" />
 
             </ScrollView>
 
-            <TouchableOpacity 
-              style={[
-                styles.saveButton, 
-                isSubmitting && { backgroundColor: '#A1887F' } 
-              ]} 
-              onPress={handleSave}
-              disabled={isSubmitting} 
-            >
-              {isSubmitting ? (
-                <ActivityIndicator size="small" color="#FFFFFF" />
-              ) : (
-                <Text style={styles.saveButtonText}>Simpan Produk</Text>
-              )}
+            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+              <Text style={styles.saveButtonText}>Simpan Produk</Text>
             </TouchableOpacity>
-
           </View>
         </KeyboardAvoidingView>
       </Modal>
@@ -322,14 +309,25 @@ export default function AdminScreen() {
 }
 
 const styles = StyleSheet.create({
+  // Login
   loginContainer: { flex: 1, backgroundColor: '#FBEce4', justifyContent: 'center', padding: 30 },
   logoContainer: { alignItems: 'center', marginBottom: 40 },
+  
+  // UPDATED: Style Logo Login
+  logoLogin: {
+    width: 150,
+    height: 120,
+    resizeMode: 'contain',
+    marginBottom: 10,
+  },
+  
   loginTitle: { fontSize: 28, fontWeight: 'bold', color: '#5D4037', marginTop: 10 },
   loginSubtitle: { fontSize: 16, color: '#795548' },
   inputContainer: { backgroundColor: '#FFF', padding: 25, borderRadius: 15, elevation: 5 },
   loginButton: { backgroundColor: '#FFC107', padding: 15, borderRadius: 10, alignItems: 'center', marginTop: 20 },
   loginButtonText: { fontWeight: 'bold', color: '#5D4037', fontSize: 16 },
 
+  // Dashboard
   container: { flex: 1, backgroundColor: '#FAFAFA' },
   header: { backgroundColor: '#FFF', padding: 20, paddingTop: 80, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#EEE' },
   headerTitle: { fontSize: 22, fontWeight: 'bold', color: '#5D4037' },
@@ -340,6 +338,7 @@ const styles = StyleSheet.create({
   addButtonText: { fontWeight: 'bold', color: '#5D4037', marginLeft: 8 },
   listContainer: { padding: 20 },
   
+  // Card
   productCard: { backgroundColor: '#FFF', borderRadius: 12, padding: 15, marginBottom: 15, flexDirection: 'row', alignItems: 'center', elevation: 2 },
   productImage: { width: 70, height: 70, borderRadius: 10, backgroundColor: '#EEE' },
   productInfo: { flex: 1, paddingHorizontal: 15 },
@@ -349,6 +348,7 @@ const styles = StyleSheet.create({
   actionButtons: { alignItems: 'center' },
   iconBtn: { padding: 8, borderRadius: 8, borderWidth: 1, borderColor: '#EEE' },
 
+  // Modal
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', padding: 20 },
   modalContent: { backgroundColor: '#FFF', borderRadius: 15, padding: 20, maxHeight: '80%', elevation: 5 },
   modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 },
@@ -356,11 +356,13 @@ const styles = StyleSheet.create({
   label: { fontSize: 14, fontWeight: '600', color: '#555', marginBottom: 6, marginTop: 10 },
   input: { backgroundColor: '#F9F9F9', borderWidth: 1, borderColor: '#DDD', borderRadius: 8, padding: 12 },
   
+  // Image Picker
   imagePicker: { height: 120, borderWidth: 1, borderColor: '#DDD', borderStyle: 'dashed', borderRadius: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FAFAFA', overflow: 'hidden' },
   imagePlaceholder: { alignItems: 'center' },
   imageText: { color: '#999', fontSize: 12, marginTop: 5 },
   imagePreview: { width: '100%', height: '100%', resizeMode: 'cover' },
 
+  // Dropdown
   dropdownTrigger: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#F9F9F9', borderWidth: 1, borderColor: '#DDD', borderRadius: 8, padding: 12 },
   dropdownList: { borderWidth: 1, borderColor: '#EEE', borderRadius: 8, marginTop: 5, backgroundColor: '#FFF' },
   dropdownItem: { padding: 12, borderBottomWidth: 1, borderBottomColor: '#F5F5F5', flexDirection: 'row', justifyContent: 'space-between' },
