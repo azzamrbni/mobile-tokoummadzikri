@@ -90,11 +90,11 @@ export default function ProductDetailScreen({ route, navigation }) {
       </ScrollView>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={[styles.btn, {backgroundColor: '#FFC107'}]} onPress={() => Linking.openURL('https://shopee.co.id')}>
-          <Text style={{fontWeight: 'bold', color: '#5D4037'}}>Beli di Shopee</Text>
+        <TouchableOpacity style={[styles.btn, {backgroundColor: '#EE4D2D'}]} onPress={() => Linking.openURL('https://shopee.co.id')}>
+          <Text style={{fontWeight: 'bold', color: '#ffff'}}>Beli di Shopee</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.btn, {borderWidth:1, borderColor:'#5D4037', marginTop:10}]} onPress={() => Linking.openURL('https://wa.me/628123')}>
-          <Text style={{fontWeight: 'bold', color: '#5D4037'}}>Tanya via WhatsApp</Text>
+        <TouchableOpacity style={[styles.btn, {borderWidth:1, borderColor:'#25D366', marginTop:10}]} onPress={() => Linking.openURL('https://wa.me/628123')}>
+          <Text style={{fontWeight: 'bold', color: '#25D366'}}>Tanya via WhatsApp</Text>
         </TouchableOpacity>
       </View>
     </View>

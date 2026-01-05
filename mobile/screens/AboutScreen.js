@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 export default function AboutScreen() {
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FBEce4" />
+      <StatusBar barStyle="dark-content" backgroundColor="#f6e3d7" />
       
       <View style={styles.hero}>
         <Text style={styles.heroTitle}>Tentang Kami</Text>
@@ -36,21 +36,21 @@ export default function AboutScreen() {
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Misi Kami</Text>
           <View style={styles.listItem}>
-            <Ionicons name="checkmark-circle" size={16} color="#FFC107" />
+            <Ionicons name="checkmark-circle" size={16} color="#5a3623" />
             <Text style={styles.listText}>Menyediakan produk berkualitas tinggi.</Text>
           </View>
           <View style={styles.listItem}>
-            <Ionicons name="checkmark-circle" size={16} color="#FFC107" />
+            <Ionicons name="checkmark-circle" size={16} color="#5a3623" />
             <Text style={styles.listText}>Pelayanan ramah dan profesional.</Text>
           </View>
           <View style={styles.listItem}>
-            <Ionicons name="checkmark-circle" size={16} color="#FFC107" />
+            <Ionicons name="checkmark-circle" size={16} color="#5a3623" />
             <Text style={styles.listText}>Menghadirkan kemudahan berbelanja.</Text>
           </View>
         </View>
       </View>
 
-      <View style={[styles.section, { backgroundColor: '#F9FAFB' }]}>
+      <View style={[styles.section, { backgroundColor: '#5a3623' }]}>
         <Text style={styles.sectionHeader}>Kenapa Memilih Kami?</Text>
         <View style={styles.gridFeatures}>
           <FeatureItem 
@@ -103,7 +103,7 @@ function FeatureItem({ icon, title, desc }) {
   return (
     <View style={styles.featureItem}>
       <View style={styles.iconBg}>
-        <Ionicons name={icon} size={20} color="#5D4037" />
+        <Ionicons name={icon} size={20} color="#5a3623" />
       </View>
       <View style={{flex: 1}}>
         <Text style={styles.featureTitle}>{title}</Text>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FFF' },
   
   // Hero
-  hero: { backgroundColor: '#FBEce4', padding: 30, paddingTop: 80, alignItems: 'center' },
+  hero: { backgroundColor: '#f6e3d7', padding: 30, paddingTop: 80, alignItems: 'center' },
   heroTitle: { fontSize: 24, fontWeight: 'bold', color: '#5D4037', marginBottom: 5 },
   heroSubtitle: { fontSize: 14, color: '#795548', textAlign: 'center' },
 

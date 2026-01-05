@@ -16,6 +16,9 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
+// UPDATED: Import Logo
+const logoImage = require('../assets/tokoummadzikrilogo-removebg-preview.png');
+
 export default function AdminScreen() {
   
   const API_URL = 'https://mobile-tokoummadzikri.vercel.app/api/products';
@@ -92,7 +95,7 @@ export default function AdminScreen() {
 
     if (!result.canceled) {
       const base64Img = `data:image/jpeg;base64,${result.assets[0].base64}`;
-      setFormImage(base64Img); // Simpan ini ke state
+      setFormImage(base64Img); 
     }
   };
 
@@ -133,7 +136,6 @@ export default function AdminScreen() {
 
     try {
       if (isEditMode) {
-        // Update (PUT)
         await fetch(`${API_URL}/${selectedId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -141,7 +143,6 @@ export default function AdminScreen() {
         });
         Alert.alert('Sukses', 'Produk berhasil diupdate!');
       } else {
-        // Create (POST)
         await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -183,7 +184,9 @@ export default function AdminScreen() {
       <View style={styles.loginContainer}>
         <StatusBar barStyle="dark-content" />
         <View style={styles.logoContainer}>
-          <Ionicons name="storefront" size={60} color="#5D4037" />
+          {/* UPDATED: Mengganti Ionicons Storefront dengan Logo Image */}
+          <Image source={logoImage} style={styles.logoLogin} />
+          
           <Text style={styles.loginTitle}>Admin Login</Text>
           <Text style={styles.loginSubtitle}>Toko Umma Dzikri</Text>
         </View>
@@ -214,7 +217,6 @@ export default function AdminScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Tombol Tambah */}
       <View style={styles.actionContainer}>
         <TouchableOpacity style={styles.addButton} onPress={openAddModal}>
           <Ionicons name="add-circle" size={22} color="#5D4037" />
@@ -310,6 +312,15 @@ const styles = StyleSheet.create({
   // Login
   loginContainer: { flex: 1, backgroundColor: '#FBEce4', justifyContent: 'center', padding: 30 },
   logoContainer: { alignItems: 'center', marginBottom: 40 },
+  
+  // UPDATED: Style Logo Login
+  logoLogin: {
+    width: 150,
+    height: 120,
+    resizeMode: 'contain',
+    marginBottom: 10,
+  },
+  
   loginTitle: { fontSize: 28, fontWeight: 'bold', color: '#5D4037', marginTop: 10 },
   loginSubtitle: { fontSize: 16, color: '#795548' },
   inputContainer: { backgroundColor: '#FFF', padding: 25, borderRadius: 15, elevation: 5 },

@@ -8,7 +8,7 @@ import {
   ScrollView,
   StatusBar,
   ActivityIndicator,
-  RefreshControl, // Import RefreshControl
+  RefreshControl,
   Alert
 } from 'react-native';
 
@@ -21,6 +21,11 @@ export default function ProductListScreen({ navigation, route }) {
   const [selectedCategory, setSelectedCategory] = useState('Semua');
 
   const categories = ['Semua', 'Souvenir', 'Pakaian', 'Makanan & Minuman'];
+
+  // Helper format uang (Rp 15.000)
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
 
   const fetchProducts = async () => {
     try {
@@ -50,12 +55,15 @@ export default function ProductListScreen({ navigation, route }) {
     fetchProducts();
   }, []);
 
+  // UPDATED: Logika ini diperbaiki agar filter bekerja dengan benar
   useEffect(() => {
     if (route.params?.filter) {
+      console.log("Menerapkan Filter:", route.params.filter);
       setSelectedCategory(route.params.filter);
-      navigation.setParams({ filter: undefined });
+      // NOTE: Saya menghapus navigation.setParams({ filter: undefined }) 
+      // karena itu menyebabkan filter langsung ter-reset sebelum sempat diterapkan.
     }
-  }, [route.params]);
+  }, [route.params?.filter]); // Hanya dijalankan jika filter berubah
 
   const filteredProducts = selectedCategory === 'Semua' 
     ? products 
@@ -127,7 +135,8 @@ export default function ProductListScreen({ navigation, route }) {
               <View style={styles.cardContent}>
                 <Text style={styles.productCategory}>{item.category}</Text>
                 <Text style={styles.productName} numberOfLines={2}>{item.name}</Text>
-                <Text style={styles.productPrice}>Rp {item.price}</Text>
+                {/* UPDATED: Menggunakan formatPrice */}
+                <Text style={styles.productPrice}>Rp {formatPrice(item.price)}</Text>
                 
                 <TouchableOpacity 
                   style={styles.btnDetail}
@@ -154,7 +163,7 @@ const styles = StyleSheet.create({
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   
   header: { padding: 20, paddingTop: 80, backgroundColor: '#FFF', alignItems: 'center' },
-  headerTitle: { fontSize: 22, fontWeight: 'bold', color: '#5D4037', marginBottom: 5 },
+  headerTitle: { fontSize: 22, fontWeight: 'bold', color: '#5a3623', marginBottom: 5 },
   headerSubtitle: { fontSize: 14, color: '#795548' },
 
   categoryContainer: { paddingHorizontal: 15, alignItems: 'center', paddingBottom: 10 },
@@ -162,7 +171,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20, paddingVertical: 8, borderRadius: 20,
     backgroundColor: '#EEE', marginRight: 10, borderWidth: 1, borderColor: 'transparent'
   },
-  categoryPillActive: { backgroundColor: '#5D4037', borderColor: '#5D4037' },
+  categoryPillActive: { backgroundColor: '#5a3623', borderColor: '#5a3623' },
   categoryText: { fontSize: 14, color: '#666' },
   categoryTextActive: { color: '#FFF', fontWeight: 'bold' },
 
@@ -179,8 +188,8 @@ const styles = StyleSheet.create({
   productName: { fontSize: 14, fontWeight: 'bold', color: '#333', height: 40, marginBottom: 4 },
   productPrice: { fontSize: 14, color: '#E65100', fontWeight: 'bold', marginBottom: 10 },
   
-  btnDetail: { backgroundColor: '#FFC107', paddingVertical: 8, borderRadius: 6, alignItems: 'center' },
-  btnDetailText: { fontSize: 12, fontWeight: 'bold', color: '#5D4037' },
+  btnDetail: { backgroundColor: '#5a3623', paddingVertical: 8, borderRadius: 6, alignItems: 'center' },
+  btnDetailText: { fontSize: 12, fontWeight: 'bold', color: '#f6e3d7' },
   
   emptyText: { textAlign: 'center', marginTop: 50, color: '#999' }
 });
