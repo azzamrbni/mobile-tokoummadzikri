@@ -15,7 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function ContactScreen() {
   
-  const API_URL = 'https://mobile-tokoummadzikri.vercel.app/api/kontak';
+  const API_URL = 'https://mobile-tokoummadzikri.vercel.app/api/messages';
 
   const [name, setName] = useState('');
   const [contact, setContact] = useState('');

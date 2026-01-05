@@ -101,6 +101,20 @@ app.delete('/api/products/:id', async (req, res) => {
   }
 });
 
+app.get('/api/messages', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('kontak')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.post('/api/messages', async (req, res) => {
   const { name, contact, message } = req.body;
   
