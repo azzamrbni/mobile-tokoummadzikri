@@ -55,15 +55,12 @@ export default function ProductListScreen({ navigation, route }) {
     fetchProducts();
   }, []);
 
-  // UPDATED: Logika ini diperbaiki agar filter bekerja dengan benar
   useEffect(() => {
     if (route.params?.filter) {
       console.log("Menerapkan Filter:", route.params.filter);
       setSelectedCategory(route.params.filter);
-      // NOTE: Saya menghapus navigation.setParams({ filter: undefined }) 
-      // karena itu menyebabkan filter langsung ter-reset sebelum sempat diterapkan.
     }
-  }, [route.params?.filter]); // Hanya dijalankan jika filter berubah
+  }, [route.params?.filter]);
 
   const filteredProducts = selectedCategory === 'Semua' 
     ? products 

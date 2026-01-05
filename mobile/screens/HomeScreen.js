@@ -13,8 +13,6 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 
-// IMPORT GAMBAR LOGO
-// Pastikan path './tokoummadzikrilogo-removebg-preview.png' sesuai dengan lokasi file Anda
 const logoImage = require('../assets/tokoummadzikrilogo-removebg-preview.png');
 
 export default function HomeScreen({ navigation }) {

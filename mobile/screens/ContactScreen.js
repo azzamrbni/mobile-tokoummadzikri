@@ -305,7 +305,6 @@ const styles = StyleSheet.create({
   cardTitle: { fontSize: 16, fontWeight: 'bold', color: '#5a3623', marginBottom: 8, textAlign: 'center' },
   cardText: { fontSize: 14, color: '#666', fontStyle: 'italic', lineHeight: 20, textAlign: 'center' },
 
-  // === STYLES BARU UNTUK BAGIAN GABUNGAN ===
   combinedSection: { backgroundColor: '#5a3623', marginVertical: 20, paddingVertical: 25, paddingHorizontal: 20 },
   subSection: { marginBottom: 10 },
   brownDivider: { height: 1, backgroundColor: '#7d5a44', width: '100%', marginVertical: 20 }, // Pembatas tipis
